@@ -20,17 +20,16 @@ inline T toUnsignedIntegral(char*& position)
 	return result;
 }
 
-char input[MAXCHARACTERS];
 uint32_t numbers[MAXNUMBERS];
 int main()
 {
-	uint32_t charCount = fread(input, sizeof(char), MAXCHARACTERS, stdin);
+	std::ios::sync_with_stdio(false);
 
-	char *it = input;
-	uint32_t numberCount = toUnsignedIntegral<uint32_t, '\n'>(it);
+	uint32_t numberCount;
+	std::cin >> numberCount;
 	for (uint32_t i = 0; i < numberCount; ++i)
 	{
-		numbers[i] = toUnsignedIntegral<uint32_t, '\n'>(it);
+		std::cin >> numbers[i];
 	}
 
     return 0;

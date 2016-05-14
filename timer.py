@@ -6,7 +6,7 @@ import math
 INPUT = 'input'
 CPP_FILE = 'parsers.cpp'
 PROGRAM = 'build/Release/numberparsing'
-SAMPLESIZE = 1000
+SAMPLESIZE = 100
 
 def create_input(max_numbers, max_digits):
     with open(INPUT, 'w', newline='\n') as input_file:
