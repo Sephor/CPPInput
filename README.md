@@ -5,6 +5,7 @@ Some functions for quick input.
 
 ###Performance (Auto generated)
 50 test runs, 1000000 numbers, up to 9 digits.
+
 Funtion | time (ms) | SD (ms) | Result
 --- | --- | --- | ---
 toUnsignedIntegral | 24 | 0.6 | OK
