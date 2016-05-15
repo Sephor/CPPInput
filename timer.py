@@ -7,9 +7,8 @@ import filecmp
 INPUT = 'input'
 CPP_FILE = 'parsers.cpp'
 PROGRAM = 'build/Release/numberparsing'
-SAMPLESIZE = 100
+SAMPLESIZE = 50
 OUT_PREFIX = 'out_'
-
 
 
 def create_input(max_numbers, max_digits):
@@ -76,7 +75,7 @@ def verify_results(names):
         result[name] = compare_file_to_input(name)
     return result
 
-def write_to_readme(results, correct):
+def write_to_readme(results, correct, max_numbers, max_digits):
     lines = []
     with open('README.md', 'r') as readme:
         lines = readme.readlines()
@@ -85,13 +84,14 @@ def write_to_readme(results, correct):
             readme.write(line)
             if line.rstrip('\r\n') == '###Performance (Auto generated)':
                 break
+        readme.write('{} test runs, {} numbers, up to {} digits.\n'.format(
+            SAMPLESIZE, max_numbers, max_digits))
         readme.write('Funtion | time (ms) | SD (ms) | Result\n')
         readme.write('--- | --- | ---\n')
         for name in results:
             status = 'OK' * correct[name] + 'INCORRECT' * (not correct[name])
             readme.write('{} | {} | {} | {}\n'.format(
                 name, results[name][0], results[name][1], status ))
-
 
 def main():
     times = []
@@ -107,7 +107,7 @@ def main():
     print()
     results = calculate_results(times)
     correct = verify_results(results.keys())
-    write_to_readme(results, correct)
+    write_to_readme(results, correct, max_numbers, max_digits)
 
 if __name__ == '__main__':
     main()

@@ -1,5 +1,5 @@
 //DON'T MOVE//
-#define MAXNUMBERS 100000
+#define MAXNUMBERS 1000000
 #define MAXDIGITS 10
 #define MAXCHARACTERS MAXNUMBERS * MAXDIGITS + MAXDIGITS
 //////////////
@@ -23,7 +23,7 @@ inline T toUnsignedIntegral(char*& position)
 }
 
 template<typename T, char Delimiter, size_t Buffersize>
-inline T nextNumber(char*& position, char*& inputBuffer) 
+inline T nextNumber(char*& position, char* inputBuffer) 
 {
 	T result = 0;
 	while (*position != Delimiter)
@@ -43,10 +43,10 @@ inline T nextNumber(char*& position, char*& inputBuffer)
 
 
 //Code for Testing
-char input[MAXCHARACTERS];
+
 uint32_t numbers[MAXNUMBERS];
 
-void write(uint32_t* numbers, uint32_t count, char* filename)
+void write(uint32_t* numbers, uint32_t count, std::string& filename)
 {
 	std::ofstream output(filename);
 	output << count << '\n';
@@ -59,6 +59,7 @@ void write(uint32_t* numbers, uint32_t count, char* filename)
 
 uint32_t readUsingToUnsignedIntegral()
 {
+	char* input = static_cast<char*>(malloc(MAXCHARACTERS * sizeof(char)));
 	fread(input, sizeof(char), MAXCHARACTERS, stdin);
 	char *it = input;
 	uint32_t numberCount = toUnsignedIntegral<uint32_t, '\n'>(it);
@@ -69,14 +70,46 @@ uint32_t readUsingToUnsignedIntegral()
 	return numberCount;
 }
 
-int main()
+uint32_t readUsingCin()
+{
+	uint32_t numberCount;
+	std::cin >> numberCount;
+	for (uint32_t i = 0; i < numberCount; ++i)
+	{
+		std::cin >> numbers[i];
+	}
+	return numberCount;
+}
+
+uint32_t readUsingNextNumber()
+{
+	char input[1000];
+	char* it = &input[1000];
+	uint32_t numberCount = nextNumber<uint32_t, '\n', 1000>(it, input);
+	for (uint32_t i = 0; i < numberCount; ++i)
+	{
+		numbers[i] = nextNumber<uint32_t, '\n', 1000>(it, input);
+	}
+	return numberCount;
+}
+
+void runTest(uint32_t (*function)(void), char* name)
 {
 	auto begin = std::chrono::high_resolution_clock::now();
-	auto count = readUsingToUnsignedIntegral();
+	auto count = function();
 	auto end = std::chrono::high_resolution_clock::now();
 	auto deltaTimeInMs = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
-	std::cout << "toUnsignedIntegral:" << deltaTimeInMs << '\n';
-	write(numbers, count, "out_toUnsignedIntegral");
+	std::cout << name << ":" << deltaTimeInMs << '\n';
+	write(numbers, count, std::string("out_") + name);
+	fseek(stdin, 0L, SEEK_SET);
+	clearerr(stdin);
+}
+
+int main()
+{
+	runTest(&readUsingToUnsignedIntegral, "toUnsignedIntegral");
+	runTest(&readUsingCin, "cin");
+	runTest(&readUsingNextNumber, "nextNumber");
 
     return 0;
 }
