@@ -10,6 +10,8 @@ PROGRAM = 'build/Release/numberparsing'
 SAMPLESIZE = 100
 OUT_PREFIX = 'out_'
 
+
+
 def create_input(max_numbers, max_digits):
     with open(INPUT, 'w', newline='\n') as input_file:
         input_file.write(str(max_numbers) + '\n')
@@ -74,6 +76,23 @@ def verify_results(names):
         result[name] = compare_file_to_input(name)
     return result
 
+def write_to_readme(results, correct):
+    lines = []
+    with open('README.md', 'r') as readme:
+        lines = readme.readlines()
+    with open('README.md', 'w') as readme:
+        for line in lines:
+            readme.write(line)
+            if line.rstrip('\r\n') == '###Performance (Auto generated)':
+                break
+        readme.write('Funtion | time (ms) | SD (ms) | Result\n')
+        readme.write('--- | --- | ---\n')
+        for name in results:
+            status = 'OK' * correct[name] + 'INCORRECT' * (not correct[name])
+            readme.write('{} | {} | {} | {}\n'.format(
+                name, results[name][0], results[name][1], status ))
+
+
 def main():
     times = []
     random.seed(0)
@@ -88,7 +107,7 @@ def main():
     print()
     results = calculate_results(times)
     correct = verify_results(results.keys())
-    print(correct)
+    write_to_readme(results, correct)
 
 if __name__ == '__main__':
     main()
