@@ -86,7 +86,7 @@ def write_to_readme(results, correct, max_numbers, max_digits):
                 break
         readme.write('{} test runs, {} numbers, up to {} digits.\n'.format(
             SAMPLESIZE, max_numbers, max_digits))
-        readme.write('Funtion | time (ms) | SD (ms) | Result\n')
+        readme.write('\nFuntion | time (ms) | SD (ms) | Result\n')
         readme.write('--- | --- | --- | ---\n')
         for name in results:
             status = 'OK' * correct[name] + 'INCORRECT' * (not correct[name])
