@@ -1,9 +1,8 @@
-##CPPInput
+## CPPInput
 
-###Description
 Some functions for quick input.
 
-###Performance (Auto generated)
+### Performance (Auto generated)
 50 test runs, 1000000 numbers, up to 9 digits.
 
 Funtion | time (ms) | SD (ms) | Result
