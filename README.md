@@ -7,6 +7,6 @@ Some functions for quick input.
 
 Funtion | time (ms) | SD (ms) | Result
 --- | --- | --- | ---
-toUnsignedIntegral | 24 | 0.6 | OK
+toUnsignedInteger | 24 | 0.6 | OK
 nextNumber | 29 | 1.5 | OK
 cin | 760 | 22.8 | OK
